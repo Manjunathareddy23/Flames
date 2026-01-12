@@ -4,8 +4,8 @@ import base64
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
-    page_title="🔥 FLAMES Game",
-    page_icon="❤️",
+    page_title="FLAMES Game",
+    page_icon="🔥",
     layout="centered"
 )
 
@@ -20,90 +20,107 @@ bg_img = load_bg("bg.jfif")
 st.markdown(f"""
 <style>
 
-/* ===== FULL BACKGROUND ===== */
+/* ===== PAGE BACKGROUND ===== */
 html, body, [data-testid="stApp"] {{
     height: 100%;
 }}
 
 [data-testid="stApp"] {{
-    background: url("data:image/jfif;base64,{bg_img}") no-repeat center center fixed;
+    background-image: url("data:image/jfif;base64,{bg_img}");
     background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }}
 
-/* ===== CENTER COLUMN (GLASS CARD) ===== */
-[data-testid="stVerticalBlock"] > div {{
-    max-width: 520px;
-    margin: auto;
-    background: rgba(15, 8, 35, 0.78);
-    backdrop-filter: blur(18px);
-    border-radius: 26px;
-    padding: 36px;
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 0 30px rgba(255, 0, 150, 0.4);
+/* ===== CENTER WRAPPER ===== */
+.app-wrapper {{
+    max-width: 420px;
+    margin: 6vh auto;
+    padding: 28px;
+    background: rgba(18, 16, 28, 0.78);
+    backdrop-filter: blur(16px);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.45);
 }}
 
 /* ===== TITLE ===== */
-.title {{
+.app-title {{
     text-align: center;
-    font-size: 52px;
-    font-weight: 900;
-    margin-bottom: 24px;
-    color: #ffe6f2;
-    text-shadow:
-        0 0 12px rgba(255, 80, 180, 1),
-        0 0 30px rgba(255, 0, 150, 0.8),
-        0 0 60px rgba(255, 0, 150, 0.6);
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 22px;
+    color: #ffffff;
+    letter-spacing: 1px;
+}}
+
+/* ===== SUBTEXT ===== */
+.app-sub {{
+    text-align: center;
+    font-size: 14px;
+    color: #cfcfe6;
+    margin-bottom: 28px;
 }}
 
 /* ===== INPUTS ===== */
 input {{
-    background: rgba(0,0,0,0.65) !important;
+    background: rgba(255,255,255,0.08) !important;
     color: #ffffff !important;
-    border-radius: 14px !important;
-    border: 1px solid #ff5fbf !important;
-    padding: 14px !important;
-    font-size: 16px !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(255,255,255,0.25) !important;
+    padding: 12px !important;
+    font-size: 15px !important;
 }}
 
 /* ===== BUTTON ===== */
 .stButton button {{
     width: 100%;
-    background: linear-gradient(135deg, #ff3cac, #784ba0, #2b86c5);
-    color: white;
-    font-size: 18px;
-    border-radius: 18px;
-    padding: 14px;
-    font-weight: 800;
+    background: #ff4d6d;
+    color: #fff;
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 14px;
+    font-weight: 600;
     border: none;
-    box-shadow: 0 0 20px rgba(255, 60, 172, 0.9);
-    transition: 0.3s ease;
+    margin-top: 10px;
+    transition: background 0.25s ease;
 }}
 
 .stButton button:hover {{
-    transform: scale(1.05);
+    background: #ff3357;
 }}
 
 /* ===== RESULT ===== */
 .result {{
     text-align: center;
-    font-size: 36px;
-    font-weight: 900;
-    margin-top: 22px;
-    color: #fff0b3;
+    font-size: 26px;
+    font-weight: 600;
+    margin-top: 24px;
+    color: #ffd166;
 }}
 
-/* ===== EMOJI ===== */
+/* ===== EMOJI FLOAT ===== */
 .emoji {{
     position: fixed;
-    bottom: -50px;
-    font-size: 34px;
-    animation: floatUp 6s linear infinite;
+    bottom: -40px;
+    font-size: 28px;
+    animation: floatUp 5.5s linear infinite;
 }}
 
 @keyframes floatUp {{
     0% {{transform: translateY(0); opacity: 0;}}
     10% {{opacity: 1;}}
-    100% {{transform: translateY(-130vh); opacity: 0;}}
+    100% {{transform: translateY(-120vh); opacity: 0;}}
+}}
+
+@media (max-width: 480px) {{
+    .app-wrapper {{
+        margin: 4vh 16px;
+        padding: 22px;
+    }}
+    .app-title {{
+        font-size: 34px;
+    }}
 }}
 
 </style>
@@ -128,15 +145,18 @@ def flames_result(name1, name2):
     return flames[0]
 
 # ---------------- UI ----------------
-st.markdown("<div class='title'>🔥 FLAMES Game 🔥</div>", unsafe_allow_html=True)
+st.markdown("""
+<div class="app-wrapper">
+    <div class="app-title">🔥 FLAMES Game</div>
+    <div class="app-sub">Just for fun — not serious ❤️</div>
+""", unsafe_allow_html=True)
 
-name1 = st.text_input("👤 Your Name")
-name2 = st.text_input("❤️ Crush / Friend Name")
+name1 = st.text_input("Your Name")
+name2 = st.text_input("Crush / Friend Name")
 
-if st.button("✨ Calculate FLAMES ✨"):
+if st.button("Calculate"):
     if name1 and name2:
-        result = flames_result(name1, name2)
-
+        r = flames_result(name1, name2)
         meanings = {
             "F": ("Friends 🤝", "🤝"),
             "L": ("Love ❤️", "❤️"),
@@ -145,18 +165,15 @@ if st.button("✨ Calculate FLAMES ✨"):
             "E": ("Enemy 😡", "😡"),
             "S": ("Sister 😇", "😇"),
         }
-
-        text, emoji = meanings[result]
+        text, emoji = meanings[r]
         st.markdown(f"<div class='result'>{text}</div>", unsafe_allow_html=True)
 
-        for _ in range(22):
-            left = random.randint(0, 100)
-            delay = random.uniform(0, 3)
+        for _ in range(18):
             st.markdown(
-                f"<div class='emoji' style='left:{left}%; animation-delay:{delay}s'>{emoji}</div>",
+                f"<div class='emoji' style='left:{random.randint(0,100)}%; animation-delay:{random.uniform(0,3)}s'>{emoji}</div>",
                 unsafe_allow_html=True
             )
     else:
-        st.warning("⚠️ Please enter both names")
+        st.warning("Please enter both names")
 
-st.markdown("<p style='text-align:center;color:#fff;margin-top:16px;'>Made by Manjunathareddy 💻</p>", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
