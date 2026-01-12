@@ -14,7 +14,7 @@ st.markdown("""
 
 /* ===== FULL PAGE BACKGROUND ===== */
 .stApp {
-    background: url("bg.jfif") no-repeat center center fixed;
+    background: url("bg.jpeg") no-repeat center center fixed;
     background-size: cover;
 }
 
