@@ -9,48 +9,50 @@ st.set_page_config(
     layout="centered"
 )
 
-# ---------------- LOAD BACKGROUND IMAGE (BASE64) ----------------
+# ---------------- LOAD BACKGROUND ----------------
 def load_bg(path):
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
 
-bg_img = load_bg("bg1.jfif")
+bg_img = load_bg("bg.jfif")
 
-# ---------------- GLOBAL CSS ----------------
+# ---------------- CSS ----------------
 st.markdown(f"""
 <style>
 
-/* ===== FORCE FULL SCREEN BACKGROUND ===== */
+/* ===== BACKGROUND ===== */
 html, body, [data-testid="stApp"] {{
     height: 100%;
-    margin: 0;
 }}
 
 [data-testid="stApp"] {{
-    background-image: url("data:image/jfif;base64,{bg_img}");
+    background: url("data:image/jfif;base64,{bg_img}") no-repeat center center fixed;
     background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
 }}
 
-/* remove streamlit padding */
+/* ===== PAGE CONTAINER ===== */
 .block-container {{
     padding-top: 2rem;
 }}
 
-/* ===== TITLE (ON BACKGROUND, NO BOX) ===== */
-.title {{
+/* ===== HEADER BOX (FIXED POSITIONING) ===== */
+.header-box {{
+    max-width: 600px;
+    margin: auto;
     text-align: center;
-    font-size: 64px;
+    padding: 15px 0 30px 0;
+}}
+
+/* ===== TITLE (NO ANIMATION, NO MOVEMENT) ===== */
+.title {{
+    font-size: 56px;
     font-weight: 900;
-    letter-spacing: 3px;
-    margin-bottom: 30px;
+    letter-spacing: 2px;
     color: #ffe6f2;
     text-shadow:
-        0 0 15px rgba(255, 80, 180, 1),
-        0 0 35px rgba(255, 0, 150, 0.9),
-        0 0 70px rgba(255, 0, 150, 0.7);
+        0 0 12px rgba(255, 80, 180, 1),
+        0 0 30px rgba(255, 0, 150, 0.8),
+        0 0 60px rgba(255, 0, 150, 0.6);
 }}
 
 /* ===== GLASS CARD ===== */
@@ -59,20 +61,10 @@ html, body, [data-testid="stApp"] {{
     margin: auto;
     background: rgba(15, 8, 35, 0.75);
     backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
     border-radius: 26px;
     padding: 40px;
     border: 1px solid rgba(255,255,255,0.2);
-    box-shadow:
-        0 0 30px rgba(255, 0, 150, 0.4),
-        inset 0 0 20px rgba(255,255,255,0.05);
-}}
-
-/* ===== LABELS ===== */
-label {{
-    color: #ffd6eb !important;
-    font-weight: 600;
-    font-size: 16px;
+    box-shadow: 0 0 30px rgba(255, 0, 150, 0.4);
 }}
 
 /* ===== INPUTS ===== */
@@ -82,7 +74,6 @@ input {{
     border-radius: 16px !important;
     border: 1px solid #ff5fbf !important;
     padding: 14px !important;
-    font-size: 16px !important;
 }}
 
 /* ===== BUTTON ===== */
@@ -95,37 +86,28 @@ input {{
     padding: 16px;
     font-weight: 800;
     border: none;
-    box-shadow:
-        0 0 20px rgba(255, 60, 172, 0.9),
-        0 0 40px rgba(120, 75, 160, 0.7);
-    transition: all 0.35s ease;
+    box-shadow: 0 0 25px rgba(255, 60, 172, 0.9);
 }}
 
 .stButton button:hover {{
-    transform: scale(1.08);
-    box-shadow:
-        0 0 35px rgba(255, 200, 255, 1),
-        0 0 70px rgba(120, 75, 160, 1);
+    transform: scale(1.05);
 }}
 
 /* ===== RESULT ===== */
 .result {{
     text-align: center;
-    font-size: 44px;
+    font-size: 42px;
     font-weight: 900;
     margin-top: 30px;
     color: #fff0b3;
-    text-shadow:
-        0 0 20px rgba(255, 200, 100, 1),
-        0 0 40px rgba(255, 150, 0, 0.9);
 }}
 
-/* ===== EMOJI FLOAT ===== */
+/* ===== EMOJI ===== */
 .emoji {{
     position: fixed;
     bottom: -60px;
     font-size: 36px;
-    animation: floatUp 6.5s linear infinite;
+    animation: floatUp 6s linear infinite;
 }}
 
 @keyframes floatUp {{
@@ -137,7 +119,7 @@ input {{
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------- FLAMES LOGIC ----------------
+# ---------------- LOGIC ----------------
 def flames_result(name1, name2):
     n1 = list(name1.lower().replace(" ", ""))
     n2 = list(name2.lower().replace(" ", ""))
@@ -158,7 +140,11 @@ def flames_result(name1, name2):
     return flames[0]
 
 # ---------------- UI ----------------
-st.markdown("<div class='title'>🔥 FLAMES Game 🔥</div>", unsafe_allow_html=True)
+st.markdown("""
+<div class="header-box">
+    <div class="title">🔥 FLAMES Game 🔥</div>
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("<div class='glass'>", unsafe_allow_html=True)
 
@@ -181,7 +167,7 @@ if st.button("✨ Calculate FLAMES ✨"):
         text, emoji = meanings[result]
         st.markdown(f"<div class='result'>{text}</div>", unsafe_allow_html=True)
 
-        for _ in range(28):
+        for _ in range(25):
             left = random.randint(0, 100)
             delay = random.uniform(0, 3)
             st.markdown(
@@ -192,4 +178,4 @@ if st.button("✨ Calculate FLAMES ✨"):
         st.warning("⚠️ Please enter both names")
 
 st.markdown("</div>", unsafe_allow_html=True)
-st.markdown("Made by Manjunathareddy❤💻")
+st.markdown("Made by Manjunathareddy💻")
