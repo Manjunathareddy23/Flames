@@ -57,16 +57,7 @@ html, body, [data-testid="stApp"] {{
 }}
 
 /* ===== GLASS CARD ===== */
-.glass {{
-    max-width: 520px;
-    margin: auto;
-    background: rgba(15, 8, 35, 0.75);
-    backdrop-filter: blur(18px);
-    border-radius: 26px;
-    padding: 40px;
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 0 30px rgba(255, 0, 150, 0.4);
-}}
+
 
 /* ===== INPUTS ===== */
 input {{
