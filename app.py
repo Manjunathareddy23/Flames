@@ -1,5 +1,6 @@
 import streamlit as st
 import random
+import base64
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
@@ -8,104 +9,130 @@ st.set_page_config(
     layout="centered"
 )
 
-# ---------------- CUSTOM CSS ----------------
-st.markdown("""
+# ---------------- LOAD BACKGROUND IMAGE (BASE64) ----------------
+def load_bg(path):
+    with open(path, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
+bg_img = load_bg("bg1.jfif")
+
+# ---------------- GLOBAL CSS ----------------
+st.markdown(f"""
 <style>
 
-/* ===== FULL PAGE BACKGROUND ===== */
-.stApp {
-    background: url("bg.jpeg") no-repeat center center fixed;
+/* ===== FORCE FULL SCREEN BACKGROUND ===== */
+html, body, [data-testid="stApp"] {{
+    height: 100%;
+    margin: 0;
+}}
+
+[data-testid="stApp"] {{
+    background-image: url("data:image/jfif;base64,{bg_img}");
     background-size: cover;
-}
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}}
 
-/* remove default padding */
-.block-container {
-    padding-top: 1.5rem;
-}
+/* remove streamlit padding */
+.block-container {{
+    padding-top: 2rem;
+}}
 
-/* ===== TITLE DIRECTLY ON BACKGROUND ===== */
-.title {
+/* ===== TITLE (ON BACKGROUND, NO BOX) ===== */
+.title {{
     text-align: center;
-    font-size: 60px;
+    font-size: 64px;
     font-weight: 900;
+    letter-spacing: 3px;
     margin-bottom: 30px;
-    letter-spacing: 2px;
-    color: #ffd9f3;
+    color: #ffe6f2;
     text-shadow:
-        0 0 12px rgba(255, 105, 180, 0.9),
-        0 0 30px rgba(255, 20, 147, 0.7),
-        0 0 55px rgba(255, 0, 150, 0.6);
-}
+        0 0 15px rgba(255, 80, 180, 1),
+        0 0 35px rgba(255, 0, 150, 0.9),
+        0 0 70px rgba(255, 0, 150, 0.7);
+}}
 
-/* ===== GLASS CARD (CONTENT ONLY) ===== */
-.glass {
-    background: rgba(20, 10, 40, 0.72);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-radius: 22px;
-    padding: 35px;
-    box-shadow: 0 0 40px rgba(255, 0, 150, 0.45);
-    border: 1px solid rgba(255,255,255,0.18);
-}
+/* ===== GLASS CARD ===== */
+.glass {{
+    max-width: 520px;
+    margin: auto;
+    background: rgba(15, 8, 35, 0.75);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 26px;
+    padding: 40px;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow:
+        0 0 30px rgba(255, 0, 150, 0.4),
+        inset 0 0 20px rgba(255,255,255,0.05);
+}}
 
 /* ===== LABELS ===== */
-label {
-    color: #ffe3f5 !important;
+label {{
+    color: #ffd6eb !important;
     font-weight: 600;
-}
+    font-size: 16px;
+}}
 
 /* ===== INPUTS ===== */
-input {
-    background: rgba(0,0,0,0.55) !important;
+input {{
+    background: rgba(0,0,0,0.65) !important;
     color: #ffffff !important;
-    border-radius: 14px !important;
-    border: 1px solid #ff4ecd !important;
-    padding: 12px !important;
-}
+    border-radius: 16px !important;
+    border: 1px solid #ff5fbf !important;
+    padding: 14px !important;
+    font-size: 16px !important;
+}}
 
 /* ===== BUTTON ===== */
-.stButton button {
+.stButton button {{
     width: 100%;
-    background: linear-gradient(90deg, #ff4ecd, #ff7eb3);
+    background: linear-gradient(135deg, #ff3cac, #784ba0, #2b86c5);
     color: white;
     font-size: 20px;
-    border-radius: 16px;
-    padding: 14px;
-    font-weight: bold;
-    box-shadow: 0 0 25px rgba(255, 78, 205, 0.85);
+    border-radius: 20px;
+    padding: 16px;
+    font-weight: 800;
+    border: none;
+    box-shadow:
+        0 0 20px rgba(255, 60, 172, 0.9),
+        0 0 40px rgba(120, 75, 160, 0.7);
     transition: all 0.35s ease;
-}
+}}
 
-.stButton button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 45px rgba(255, 200, 230, 1);
-}
+.stButton button:hover {{
+    transform: scale(1.08);
+    box-shadow:
+        0 0 35px rgba(255, 200, 255, 1),
+        0 0 70px rgba(120, 75, 160, 1);
+}}
 
 /* ===== RESULT ===== */
-.result {
+.result {{
     text-align: center;
-    font-size: 42px;
-    font-weight: 800;
+    font-size: 44px;
+    font-weight: 900;
     margin-top: 30px;
-    color: #fff1b8;
+    color: #fff0b3;
     text-shadow:
-        0 0 15px rgba(255, 204, 112, 0.9),
-        0 0 30px rgba(255, 153, 51, 0.8);
-}
+        0 0 20px rgba(255, 200, 100, 1),
+        0 0 40px rgba(255, 150, 0, 0.9);
+}}
 
 /* ===== EMOJI FLOAT ===== */
-.emoji {
+.emoji {{
     position: fixed;
-    bottom: -50px;
-    font-size: 34px;
-    animation: floatUp 7s linear infinite;
-}
+    bottom: -60px;
+    font-size: 36px;
+    animation: floatUp 6.5s linear infinite;
+}}
 
-@keyframes floatUp {
-    0% {transform: translateY(0); opacity: 0;}
-    10% {opacity: 1;}
-    100% {transform: translateY(-130vh); opacity: 0;}
-}
+@keyframes floatUp {{
+    0% {{transform: translateY(0); opacity: 0;}}
+    10% {{opacity: 1;}}
+    100% {{transform: translateY(-140vh); opacity: 0;}}
+}}
 
 </style>
 """, unsafe_allow_html=True)
@@ -131,11 +158,8 @@ def flames_result(name1, name2):
     return flames[0]
 
 # ---------------- UI ----------------
-
-# TITLE ON BACKGROUND (NOT INSIDE GLASS)
 st.markdown("<div class='title'>🔥 FLAMES Game 🔥</div>", unsafe_allow_html=True)
 
-# CONTENT CARD
 st.markdown("<div class='glass'>", unsafe_allow_html=True)
 
 name1 = st.text_input("👤 Your Name")
@@ -157,9 +181,9 @@ if st.button("✨ Calculate FLAMES ✨"):
         text, emoji = meanings[result]
         st.markdown(f"<div class='result'>{text}</div>", unsafe_allow_html=True)
 
-        for _ in range(25):
+        for _ in range(28):
             left = random.randint(0, 100)
-            delay = random.uniform(0, 4)
+            delay = random.uniform(0, 3)
             st.markdown(
                 f"<div class='emoji' style='left:{left}%; animation-delay:{delay}s'>{emoji}</div>",
                 unsafe_allow_html=True
@@ -168,3 +192,4 @@ if st.button("✨ Calculate FLAMES ✨"):
         st.warning("⚠️ Please enter both names")
 
 st.markdown("</div>", unsafe_allow_html=True)
+st.markdown("Made by Manjunathareddy❤💻")
