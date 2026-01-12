@@ -20,7 +20,7 @@ bg_img = load_bg("bg.jfif")
 st.markdown(f"""
 <style>
 
-/* ===== BACKGROUND ===== */
+/* ===== FULL BACKGROUND ===== */
 html, body, [data-testid="stApp"] {{
     height: 100%;
 }}
@@ -30,25 +30,24 @@ html, body, [data-testid="stApp"] {{
     background-size: cover;
 }}
 
-/* ===== PAGE CONTAINER ===== */
-.block-container {{
-    padding-top: 2rem;
-}}
-
-/* ===== HEADER BOX (FIXED POSITIONING) ===== */
-.header-box {{
-    max-width: 600px;
+/* ===== CENTER COLUMN (GLASS CARD) ===== */
+[data-testid="stVerticalBlock"] > div {{
+    max-width: 520px;
     margin: auto;
-    text-align: center;
-    padding: 15px 0 30px 0;
+    background: rgba(15, 8, 35, 0.78);
+    backdrop-filter: blur(18px);
+    border-radius: 26px;
+    padding: 36px;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 0 30px rgba(255, 0, 150, 0.4);
 }}
 
-/* ===== TITLE (NO ANIMATION, NO MOVEMENT) ===== */
+/* ===== TITLE ===== */
 .title {{
-    font-size: 56px;
+    text-align: center;
+    font-size: 52px;
     font-weight: 900;
-    letter-spacing: 2px;
-    margin-top:200;
+    margin-bottom: 24px;
     color: #ffe6f2;
     text-shadow:
         0 0 12px rgba(255, 80, 180, 1),
@@ -56,16 +55,14 @@ html, body, [data-testid="stApp"] {{
         0 0 60px rgba(255, 0, 150, 0.6);
 }}
 
-/* ===== GLASS CARD ===== */
-
-
 /* ===== INPUTS ===== */
 input {{
     background: rgba(0,0,0,0.65) !important;
     color: #ffffff !important;
-    border-radius: 16px !important;
+    border-radius: 14px !important;
     border: 1px solid #ff5fbf !important;
     padding: 14px !important;
+    font-size: 16px !important;
 }}
 
 /* ===== BUTTON ===== */
@@ -73,12 +70,13 @@ input {{
     width: 100%;
     background: linear-gradient(135deg, #ff3cac, #784ba0, #2b86c5);
     color: white;
-    font-size: 20px;
-    border-radius: 20px;
-    padding: 16px;
+    font-size: 18px;
+    border-radius: 18px;
+    padding: 14px;
     font-weight: 800;
     border: none;
-    box-shadow: 0 0 25px rgba(255, 60, 172, 0.9);
+    box-shadow: 0 0 20px rgba(255, 60, 172, 0.9);
+    transition: 0.3s ease;
 }}
 
 .stButton button:hover {{
@@ -88,24 +86,24 @@ input {{
 /* ===== RESULT ===== */
 .result {{
     text-align: center;
-    font-size: 42px;
+    font-size: 36px;
     font-weight: 900;
-    margin-top: 30px;
+    margin-top: 22px;
     color: #fff0b3;
 }}
 
 /* ===== EMOJI ===== */
 .emoji {{
     position: fixed;
-    bottom: -60px;
-    font-size: 36px;
+    bottom: -50px;
+    font-size: 34px;
     animation: floatUp 6s linear infinite;
 }}
 
 @keyframes floatUp {{
     0% {{transform: translateY(0); opacity: 0;}}
     10% {{opacity: 1;}}
-    100% {{transform: translateY(-140vh); opacity: 0;}}
+    100% {{transform: translateY(-130vh); opacity: 0;}}
 }}
 
 </style>
@@ -122,23 +120,15 @@ def flames_result(name1, name2):
             n2.remove(ch)
 
     count = len(n1) + len(n2)
-
     flames = ["F", "L", "A", "M", "E", "S"]
     idx = 0
     while len(flames) > 1:
         idx = (idx + count - 1) % len(flames)
         flames.pop(idx)
-
     return flames[0]
 
 # ---------------- UI ----------------
-st.markdown("""
-<div class="header-box">
-    <div class="title">🔥 FLAMES Game 🔥</div>
-</div>
-""", unsafe_allow_html=True)
-
-st.markdown("<div class='glass'>", unsafe_allow_html=True)
+st.markdown("<div class='title'>🔥 FLAMES Game 🔥</div>", unsafe_allow_html=True)
 
 name1 = st.text_input("👤 Your Name")
 name2 = st.text_input("❤️ Crush / Friend Name")
@@ -159,7 +149,7 @@ if st.button("✨ Calculate FLAMES ✨"):
         text, emoji = meanings[result]
         st.markdown(f"<div class='result'>{text}</div>", unsafe_allow_html=True)
 
-        for _ in range(25):
+        for _ in range(22):
             left = random.randint(0, 100)
             delay = random.uniform(0, 3)
             st.markdown(
@@ -169,5 +159,4 @@ if st.button("✨ Calculate FLAMES ✨"):
     else:
         st.warning("⚠️ Please enter both names")
 
-st.markdown("</div>", unsafe_allow_html=True)
-st.markdown("Made by Manjunathareddy💻")
+st.markdown("<p style='text-align:center;color:#fff;margin-top:16px;'>Made by Manjunathareddy 💻</p>", unsafe_allow_html=True)
