@@ -14,7 +14,7 @@ def load_bg(path):
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
 
-bg_img = load_bg("l.jfif")
+bg_img = load_bg("bg.jfif")
 
 # ---------------- CSS ----------------
 st.markdown(f"""
