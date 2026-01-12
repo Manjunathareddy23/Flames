@@ -48,6 +48,7 @@ html, body, [data-testid="stApp"] {{
     font-size: 56px;
     font-weight: 900;
     letter-spacing: 2px;
+    margin-top:200;
     color: #ffe6f2;
     text-shadow:
         0 0 12px rgba(255, 80, 180, 1),
