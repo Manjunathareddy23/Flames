@@ -11,85 +11,102 @@ st.set_page_config(
 # ---------------- CUSTOM CSS ----------------
 st.markdown("""
 <style>
-/* ----- BACKGROUND ----- */
+
+/* ===== FULL PAGE BACKGROUND ===== */
 .stApp {
-    background: url("bg.jpeg");
+    background: url("bg.jpeg") no-repeat center center fixed;
     background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
 }
 
-/* ----- GLASS CARD ----- */
-.glass {
-    background: rgba(20, 10, 40, 0.75);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 20px;
-    padding: 35px;
-    box-shadow: 0 0 40px rgba(255, 0, 150, 0.4);
-    border: 1px solid rgba(255,255,255,0.15);
+/* remove default padding */
+.block-container {
+    padding-top: 1.5rem;
 }
 
-/* ----- TITLE ----- */
+/* ===== TITLE DIRECTLY ON BACKGROUND ===== */
 .title {
     text-align: center;
-    font-size: 52px;
+    font-size: 60px;
     font-weight: 900;
-    background: linear-gradient(90deg, #ff4ecd, #ffcc70);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 25px rgba(255, 0, 200, 0.6);
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+    color: #ffd9f3;
+    text-shadow:
+        0 0 12px rgba(255, 105, 180, 0.9),
+        0 0 30px rgba(255, 20, 147, 0.7),
+        0 0 55px rgba(255, 0, 150, 0.6);
 }
 
-/* ----- INPUTS ----- */
+/* ===== GLASS CARD (CONTENT ONLY) ===== */
+.glass {
+    background: rgba(20, 10, 40, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 22px;
+    padding: 35px;
+    box-shadow: 0 0 40px rgba(255, 0, 150, 0.45);
+    border: 1px solid rgba(255,255,255,0.18);
+}
+
+/* ===== LABELS ===== */
+label {
+    color: #ffe3f5 !important;
+    font-weight: 600;
+}
+
+/* ===== INPUTS ===== */
 input {
-    background: rgba(0,0,0,0.6) !important;
-    color: #fff !important;
-    border-radius: 12px !important;
+    background: rgba(0,0,0,0.55) !important;
+    color: #ffffff !important;
+    border-radius: 14px !important;
     border: 1px solid #ff4ecd !important;
+    padding: 12px !important;
 }
 
-/* ----- BUTTON ----- */
+/* ===== BUTTON ===== */
 .stButton button {
     width: 100%;
     background: linear-gradient(90deg, #ff4ecd, #ff7eb3);
     color: white;
     font-size: 20px;
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 14px;
     font-weight: bold;
-    box-shadow: 0 0 20px rgba(255, 78, 205, 0.8);
-    transition: 0.3s ease;
+    box-shadow: 0 0 25px rgba(255, 78, 205, 0.85);
+    transition: all 0.35s ease;
 }
 
 .stButton button:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 35px rgba(255, 204, 112, 1);
+    box-shadow: 0 0 45px rgba(255, 200, 230, 1);
 }
 
-/* ----- RESULT TEXT ----- */
+/* ===== RESULT ===== */
 .result {
     text-align: center;
-    font-size: 40px;
+    font-size: 42px;
     font-weight: 800;
-    margin-top: 25px;
-    color: #ffcc70;
-    text-shadow: 0 0 25px rgba(255, 204, 112, 0.9);
+    margin-top: 30px;
+    color: #fff1b8;
+    text-shadow:
+        0 0 15px rgba(255, 204, 112, 0.9),
+        0 0 30px rgba(255, 153, 51, 0.8);
 }
 
-/* ----- EMOJI ANIMATION ----- */
+/* ===== EMOJI FLOAT ===== */
 .emoji {
     position: fixed;
-    bottom: -40px;
-    font-size: 32px;
-    animation: floatUp 6s linear infinite;
+    bottom: -50px;
+    font-size: 34px;
+    animation: floatUp 7s linear infinite;
 }
 
 @keyframes floatUp {
     0% {transform: translateY(0); opacity: 0;}
     10% {opacity: 1;}
-    100% {transform: translateY(-120vh); opacity: 0;}
+    100% {transform: translateY(-130vh); opacity: 0;}
 }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -114,8 +131,12 @@ def flames_result(name1, name2):
     return flames[0]
 
 # ---------------- UI ----------------
-st.markdown("<div class='glass'>", unsafe_allow_html=True)
+
+# TITLE ON BACKGROUND (NOT INSIDE GLASS)
 st.markdown("<div class='title'>🔥 FLAMES Game 🔥</div>", unsafe_allow_html=True)
+
+# CONTENT CARD
+st.markdown("<div class='glass'>", unsafe_allow_html=True)
 
 name1 = st.text_input("👤 Your Name")
 name2 = st.text_input("❤️ Crush / Friend Name")
@@ -136,8 +157,7 @@ if st.button("✨ Calculate FLAMES ✨"):
         text, emoji = meanings[result]
         st.markdown(f"<div class='result'>{text}</div>", unsafe_allow_html=True)
 
-        # Emoji rain animation
-        for i in range(25):
+        for _ in range(25):
             left = random.randint(0, 100)
             delay = random.uniform(0, 4)
             st.markdown(
